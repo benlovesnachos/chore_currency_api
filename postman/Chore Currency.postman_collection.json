@@ -1,0 +1,510 @@
+{
+	"info": {
+		"_postman_id": "5e8006f0-39bf-4732-add1-0bc9ae3441c8",
+		"name": "Chore Currency",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "CC Api",
+			"item": [
+				{
+					"name": "Auth",
+					"item": [
+						{
+							"name": "Login",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let jsonData = pm.response.json();\r",
+											"\r",
+											"pm.environment.set(\"userId\", jsonData.userId);\r",
+											"pm.environment.set(\"accessToken\", jsonData.accessToken);\r",
+											"pm.environment.set(\"refreshToken\", jsonData.refreshToken);\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n   \"email\" : \"admin@email.com\",\r\n   \"password\" : \"s3cr3tp4sswo4rd\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{server}}:{{serverPort}}/auth",
+									"host": [
+										"{{server}}"
+									],
+									"port": "{{serverPort}}",
+									"path": [
+										"auth"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Refresh Token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let jsonData = pm.response.json();\r",
+											"\r",
+											"pm.environment.set(\"accessToken\", jsonData.accessToken);\r",
+											"pm.environment.set(\"refreshToken\", jsonData.refreshToken);\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n   \"refresh_token\" : \"{{refreshToken}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{server}}:{{serverPort}}/auth/refresh",
+									"host": [
+										"{{server}}"
+									],
+									"port": "{{serverPort}}",
+									"path": [
+										"auth",
+										"refresh"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "User",
+					"item": [
+						{
+							"name": "Add User",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let jsonData = pm.response.json();\r",
+											"\r",
+											"pm.environment.set(\"userId\", jsonData.userId);\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n   \"firstName\" : \"Admin\",\r\n   \"lastName\" : \"Admin\",\r\n   \"email\" : \"admin@email.com\",\r\n   \"password\" : \"s3cr3tp4sswo4rd\",\r\n   \"permissionLevel\" : 2048\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{server}}:{{serverPort}}/users/",
+									"host": [
+										"{{server}}"
+									],
+									"port": "{{serverPort}}",
+									"path": [
+										"users",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get a User",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{server}}:{{serverPort}}/users/{{userId}}",
+									"host": [
+										"{{server}}"
+									],
+									"port": "{{serverPort}}",
+									"path": [
+										"users",
+										"{{userId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get a User CCs",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{server}}:{{serverPort}}/users/{{userId}}/choreCurrency",
+									"host": [
+										"{{server}}"
+									],
+									"port": "{{serverPort}}",
+									"path": [
+										"users",
+										"{{userId}}",
+										"choreCurrency"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update User",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n   \"firstName\" : \"Joe\",\r\n   \"lastName\" : \"Schmoe\",\r\n   \"permissionLevel\" : 4\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{server}}:{{serverPort}}/users/{{userId}}",
+									"host": [
+										"{{server}}"
+									],
+									"port": "{{serverPort}}",
+									"path": [
+										"users",
+										"{{userId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get All Users",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{server}}:{{serverPort}}/users",
+									"host": [
+										"{{server}}"
+									],
+									"port": "{{serverPort}}",
+									"path": [
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete User",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{server}}:{{serverPort}}/users/{{userId}}",
+									"host": [
+										"{{server}}"
+									],
+									"port": "{{serverPort}}",
+									"path": [
+										"users",
+										"{{userId}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "CC",
+					"item": [
+						{
+							"name": "Create CC",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let jsonData = pm.response.json();\r",
+											"\r",
+											"pm.environment.set(\"choreCurrencyId\", jsonData.choreCurrencyId);\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n   \"userId\" : \"{{userId}}\",\r\n   \"choreCurrency\" : 0\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{server}}:{{serverPort}}/choreCurrency/",
+									"host": [
+										"{{server}}"
+									],
+									"port": "{{serverPort}}",
+									"path": [
+										"choreCurrency",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add CC",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n   \"amount\" : 321\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{server}}:{{serverPort}}/choreCurrency/{{choreCurrencyId}}/add",
+									"host": [
+										"{{server}}"
+									],
+									"port": "{{serverPort}}",
+									"path": [
+										"choreCurrency",
+										"{{choreCurrencyId}}",
+										"add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Assign CC",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n   \"userId\" : \"{{userId}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{server}}:{{serverPort}}/choreCurrency/{{choreCurrencyId}}/assign",
+									"host": [
+										"{{server}}"
+									],
+									"port": "{{serverPort}}",
+									"path": [
+										"choreCurrency",
+										"{{choreCurrencyId}}",
+										"assign"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List All CCs",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{server}}:{{serverPort}}/choreCurrency",
+									"host": [
+										"{{server}}"
+									],
+									"port": "{{serverPort}}",
+									"path": [
+										"choreCurrency"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get a CC",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{server}}:{{serverPort}}/choreCurrency/{{choreCurrencyId}}",
+									"host": [
+										"{{server}}"
+									],
+									"port": "{{serverPort}}",
+									"path": [
+										"choreCurrency",
+										"{{choreCurrencyId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update CC",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n   \"choreCurrency\" : 4\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{server}}:{{serverPort}}/choreCurrency/{{choreCurrencyId}}",
+									"host": [
+										"{{server}}"
+									],
+									"port": "{{serverPort}}",
+									"path": [
+										"choreCurrency",
+										"{{choreCurrencyId}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{accessToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
